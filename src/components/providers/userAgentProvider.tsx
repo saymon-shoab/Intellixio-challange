@@ -30,7 +30,7 @@ const UserAgentContext = createContext<UserAgentContextType | undefined>(
 
 export const useUserAgentContext = (): UserAgentContextType => {
   const context = useContext(UserAgentContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error(CONTEXT_ERROR);
   }
   return context;
@@ -38,15 +38,16 @@ export const useUserAgentContext = (): UserAgentContextType => {
 
 export const UserAgentProvider: React.FC<UserAgentProviderProps> = ({
   children,
-  userAgent: userAgentProp,
+  userAgent: serverUserAgent,
 }) => {
   const [userAgent, setUserAgent] = useState<UserAgent | undefined>(
-    userAgentProp
+    serverUserAgent 
   );
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    setUserAgent(window.navigator.userAgent);
+    if (typeof window !== "undefined") {
+      setUserAgent(window.navigator.userAgent);
+    }
   }, []);
 
   const value = useMemo<UserAgentContextType>(

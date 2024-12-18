@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Product } from "@/types";
 import { ProductModal } from "@/views/products/productModal/productModal";
 import { BackToHome } from "@/components/backToHome/backToHome";
@@ -17,6 +17,27 @@ export const Products: React.FC = () => {
     paginatedItems: paginatedProducts,
     handlePageChange,
   } = usePagination({ items: PRODUCTS_DATA, itemsPerPage: 5 });
+
+/* 
+ *Load modal state from localStorage on mount
+*/
+  useEffect(() => {
+    const storedProduct = localStorage.getItem("selectedProduct");
+    if (storedProduct) {
+      setSelectedProduct(JSON.parse(storedProduct));
+    }
+  }, []);
+
+  /* 
+   *Save modal state to localStorage when it changes
+  */
+  useEffect(() => {
+    if (selectedProduct) {
+      localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct));
+    } else {
+      localStorage.removeItem("selectedProduct");
+    }
+  }, [selectedProduct]);
 
   const handleOpenModal = useCallback((product: Product) => {
     setSelectedProduct(product);

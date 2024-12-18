@@ -5,7 +5,7 @@ import { useUserAgentContext } from "@/components/providers/userAgentProvider";
 
 export const UserAgent = () => {
   const { userAgent } = useUserAgentContext();
-
+  console.log("user agent",userAgent);
   return (
     <div>
       <BackToHome />
@@ -22,3 +22,7 @@ export const UserAgent = () => {
     </div>
   );
 };
+
+
+
+
